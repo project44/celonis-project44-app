@@ -1,0 +1,19 @@
+const PORT = process.env.PORT || 3000;
+const ENV = process.env.ENVIRONMENT || 'DEV';
+const P44_API_SERVER = process.env.P44_API_SERVER || 'https://na12.api.project44.com';
+const CELONIS_API_SERVER = process.env.CELONIS_API_SERVER;
+const CELONIS_API_KEY = process.env.CELONIS_API_KEY;
+const CELONIS_POOL_ID = process.env.CELONIS_POOL_ID;
+const PROJECT44_CLIENT_ID = process.env.PROJECT44_CLIENT_ID;
+const PROJECT44_CLIENT_SECRET = process.env.PROJECT44_CLIENT_SECRET;
+
+module.exports = {
+  PORT,
+  ENV,
+  P44_API_SERVER,
+  CELONIS_API_SERVER,
+  CELONIS_API_KEY,
+  CELONIS_POOL_ID,
+  PROJECT44_CLIENT_ID,
+  PROJECT44_CLIENT_SECRET
+};
