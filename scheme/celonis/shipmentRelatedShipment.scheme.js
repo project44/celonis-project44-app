@@ -30,6 +30,12 @@ const SHIPMENT_RELATED_SHIPMENT_SCHEME = new parquet.ParquetSchema({
   waybill: { type: 'UTF8', optional: true }
 });
 
+const SHIPMENT_RELATED_SHIPMENT_KEYS = [
+  "shipment_id",
+  "related_shipment_id"
+];
+
 module.exports = {
-  SHIPMENT_RELATED_SHIPMENT_SCHEME
+  SHIPMENT_RELATED_SHIPMENT_SCHEME,
+  SHIPMENT_RELATED_SHIPMENT_KEYS
 };

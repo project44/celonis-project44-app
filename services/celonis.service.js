@@ -76,7 +76,7 @@ const createJob = async (keys, targetName, type='DELTA') => {
  * @returns {Promise<Object>} - A Promise that resolves to the response object from the upload request.
  * @throws {Error} - If there is an error uploading the file.
  */
-const uploadParquetFile = async (jobId, filePath) => {
+const uploadJobFile = async (jobId, filePath) => {
   const url = `${CELONIS_API_SERVER}/integration/api/v1/data-push/${CELONIS_POOL_ID}/jobs/${jobId}/chunks/upserted`;
   logger.info(`Uploading file ${filePath} to ${url}`);
 
@@ -123,6 +123,6 @@ const executeJob = async (jobId) => {
 module.exports = {
   sendToCelonis,
   createJob,
-  uploadParquetFile,
+  uploadJobFile,
   executeJob
 };

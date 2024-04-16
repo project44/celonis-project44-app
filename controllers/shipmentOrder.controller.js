@@ -1,15 +1,7 @@
 const { writeParquetFile,  deleteParquetFile } = require('../utils/parquet.js');
 const { SHIPMENT_ORDER_SCHEME } = require('../scheme/celonis/shipmentOrder.scheme.js');
-const { sendToCelonis } = require('../services/celonis.service.js');
-const { checkFileExistsSync } = require('../utils/util.js');
 const { logger } = require('../utils/logger.js');
 const { getOrders }  = require('../services/p44.orders.service.js');
-const { ca } = require('date-fns/locale');
-
-const keys = [
-  "shipment_id",
-  "order_id"
-];
 
 async function parseOrders(orders, shipment_id) {
   const payload = [];
@@ -20,6 +12,8 @@ async function parseOrders(orders, shipment_id) {
       order_id: order.id,
       customer_order_id: order.orderIdentifier || null
     }
+
+    logger.info(`Processing Order ${order.id} for Shipment ${shipment_id}`);
 
     o = Object.assign(o, parseAdditionalIdentifiers(order.additionalIdentifiers));
 
@@ -60,7 +54,7 @@ async function parseOrders(orders, shipment_id) {
     o.vendor_alt_contact_phone_country_code = order.vendorLocation && order.vendorLocation.contact  && order.vendorLocation.contact.phoneNumber2CountryCode ? order.vendorLocation.contact.phoneNumber2CountryCode : null;
     o.vendor_alt_contact_phone = order.vendorLocation && order.vendorLocation.contact && order.vendorLocation.contact.phoneNumber2 ? order.vendorLocation.contact.phoneNumber2 : null;
     o.vendor_fax_contact_phone_country_code = order.vendorLocation && order.vendorLocation.contact && order.vendorLocation.contact.faxNumberCountryCode ? order.vendorLocation.contact.faxNumberCountryCode : null;
-    o.vendor_fax_contact_phone = oder.vendorLocation && order.vendorLocation.contact && order.vendorLocation.contact.faxNumber ? order.vendorLocation.contact.faxNumber : null;
+    o.vendor_fax_contact_phone = order.vendorLocation && order.vendorLocation.contact && order.vendorLocation.contact.faxNumber ? order.vendorLocation.contact.faxNumber : null;
     o.vendor_contact_email = order.vendorLocation && order.vendorLocation.contact && order.vendorLocation.contact.email ? order.vendorLocation.contact.email : null;
 
     o.origin_id = order.originLocation && order.originLocation.id ? order.originLocation.id : null;
@@ -81,7 +75,7 @@ async function parseOrders(orders, shipment_id) {
     o.origin_alt_contact_phone_country_code = order.originLocation && order.originLocation.contact  && order.originLocation.contact.phoneNumber2CountryCode ? order.originLocation.contact.phoneNumber2CountryCode : null;
     o.origin_alt_contact_phone = order.originLocation && order.originLocation.contact && order.originLocation.contact.phoneNumber2 ? order.originLocation.contact.phoneNumber2 : null;
     o.origin_fax_contact_phone_country_code = order.originLocation && order.originLocation.contact && order.originLocation.contact.faxNumberCountryCode ? order.originLocation.contact.faxNumberCountryCode : null;
-    o.origin_fax_contact_phone = oder.originLocation && order.originLocation.contact && order.originLocation.contact.faxNumber ? order.originLocation.contact.faxNumber : null;
+    o.origin_fax_contact_phone = order.originLocation && order.originLocation.contact && order.originLocation.contact.faxNumber ? order.originLocation.contact.faxNumber : null;
     o.origin_contact_email = order.originLocation && order.originLocation.contact && order.originLocation.contact.email ? order.originLocation.contact.email : null;
   
     o.destination_id = order.destinationLocation && order.destinationLocation.id ? order.destinationLocation.id : null;
@@ -102,7 +96,7 @@ async function parseOrders(orders, shipment_id) {
     o.destination_alt_contact_phone_country_code = order.destinationLocation && order.destinationLocation.contact  && order.destinationLocation.contact.phoneNumber2CountryCode ? order.destinationLocation.contact.phoneNumber2CountryCode : null;
     o.destination_alt_contact_phone = order.destinationLocation && order.destinationLocation.contact && order.destinationLocation.contact.phoneNumber2 ? order.destinationLocation.contact.phoneNumber2 : null;
     o.destination_fax_contact_phone_country_code = order.destinationLocation && order.destinationLocation.contact && order.destinationLocation.contact.faxNumberCountryCode ? order.destinationLocation.contact.faxNumberCountryCode : null;
-    o.destination_fax_contact_phone = oder.destinationLocation && order.destinationLocation.contact && order.destinationLocation.contact.faxNumber ? order.destinationLocation.contact.faxNumber : null;
+    o.destination_fax_contact_phone = order.destinationLocation && order.destinationLocation.contact && order.destinationLocation.contact.faxNumber ? order.destinationLocation.contact.faxNumber : null;
     o.destination_contact_email = order.destinationLocation && order.destinationLocation.contact && order.destinationLocation.contact.email ? order.destinationLocation.contact.email : null;
 
 
@@ -124,9 +118,8 @@ async function parseOrders(orders, shipment_id) {
     o.bill_to_alt_contact_phone_country_code = order.billToLocation && order.billToLocation.contact  && order.billToLocation.contact.phoneNumber2CountryCode ? order.billToLocation.contact.phoneNumber2CountryCode : null;
     o.bill_to_alt_contact_phone = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.phoneNumber2 ? order.billToLocation.contact.phoneNumber2 : null;
     o.bill_to_fax_contact_phone_country_code = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.faxNumberCountryCode ? order.billToLocation.contact.faxNumberCountryCode : null;
-    o.bill_to_fax_contact_phone = oder.vendorLocation && order.billToLocation.contact && order.billToLocation.contact.faxNumber ? order.billToLocation.contact.faxNumber : null;
+    o.bill_to_fax_contact_phone = order.vendorLocation && order.billToLocation.contact && order.billToLocation.contact.faxNumber ? order.billToLocation.contact.faxNumber : null;
     o.bill_to_contact_email = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.email ? order.billToLocation.contact.email : null;
-
     payload.push(o);
   }
 
@@ -135,22 +128,19 @@ async function parseOrders(orders, shipment_id) {
 
 async function processOrders(shipment) {
   var orders = await getOrders(shipment.id);
-  var fileName = await writeParquetFile(orders, shipment.id, 'shipment_orders', SHIPMENT_ORDER_SCHEME);
-  if(checkFileExistsSync(fileName)) {
-    var response = await sendToCelonis(keys, fileName, 'shipment_related_shipments');
-    var id = null;
-    if(response && response.data) {
-      id = response.data.id;
-    }
-    deleteParquetFile(fileName);
-    return id;  
-  } else {
-    logger.warn(`File ${fileName} does not exist`);
-    return -1;
+  var parsedOrders = await parseOrders(orders, shipment.id);  
+  if(orders == null || orders.length == 0) {
+    logger.error(`No Orders found for Shipment ${shipment.id}`);
+    return;
   }
+  var fileName = await writeParquetFile(parsedOrders, 'shipment_orders', SHIPMENT_ORDER_SCHEME, shipment.id);
+  logger.info(`File ${fileName} Created.`);
 }
 
 function parseAdditionalIdentifiers(data) {
+  if(data == null || data.length == 0) {
+    return {};
+  }
   return data.reduce((acc, curr) => {
     acc[`order_${curr.type.toLowerCase()}_id`] = curr.value;
     return acc;

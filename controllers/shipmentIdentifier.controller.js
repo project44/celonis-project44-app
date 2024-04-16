@@ -1,13 +1,6 @@
 const { writeParquetFile,  deleteParquetFile } = require('../utils/parquet.js');
 const { SHIPMENT_IDENTIFIER_SCHEME } = require('../scheme/celonis/shipmentIdentifier.scheme.js');
-const { checkFileExistsSync } = require('../utils/util.js');
-const { sendToCelonis } = require('../services/celonis.service.js');
 const { logger } = require('../utils/logger.js');
-const keys = [
-  "shipment_id",
-  "type",
-  "value"
-];
 
 /**
  * Parses the identifiers of a shipment.
@@ -32,19 +25,8 @@ async function parseIdentifiers(shipment) {
  */
 async function processIdentifiers(shipment) {
   var identifiers = await parseIdentifiers(shipment);
-  var fileName = await writeParquetFile(identifiers, shipment.id, 'identifiers', SHIPMENT_IDENTIFIER_SCHEME);
-  if(checkFileExistsSync(fileName)) {
-    var response = await sendToCelonis(keys, fileName, 'shipment_identifiers');
-    var id = null;
-    if(response && response.data) {
-      id = response.data.id;
-    }
-    await deleteParquetFile(fileName);
-    return id;
-  } else {
-    logger.warn(`File ${fileName} does not exist`);
-    return -1
-  }
+  var fileName = await writeParquetFile(identifiers, 'shipment_identifiers', SHIPMENT_IDENTIFIER_SCHEME, shipment.id);
+  logger.info(`File ${fileName} Created.`);
 }
 
 module.exports = {

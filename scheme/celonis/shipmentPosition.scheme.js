@@ -20,6 +20,12 @@ const SHIPMENT_POSITION_SCHEME = new parquet.ParquetSchema({
   longitude: { type: 'FLOAT' }
 });
 
+const SHIPMENT_POSITION_KEYS = [
+  "shipment_id",
+  "date_time"
+];
+
 module.exports = {
-  SHIPMENT_POSITION_SCHEME
+  SHIPMENT_POSITION_SCHEME,
+  SHIPMENT_POSITION_KEYS
 };

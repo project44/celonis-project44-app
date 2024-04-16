@@ -20,6 +20,13 @@ const SHIPMENT_STATE_SCHEME = new parquet.ParquetSchema({
   route_segment_id: { type: 'UTF8', optional: true }
 });
 
+const SHIPMENT_STATE_KEYS = [
+  "shipment_id",
+  "type"
+];
+
+
 module.exports = {
-  SHIPMENT_STATE_SCHEME
+  SHIPMENT_STATE_SCHEME,
+  SHIPMENT_STATE_KEYS
 };

@@ -2,6 +2,7 @@ const parquet = require('parquetjs');
 const fs = require('fs');
 const path = require('path');
 const {logger} = require('./logger.js');
+const dayjs = require('dayjs');
 
 /**
  * Writes data to a Parquet file.
@@ -11,8 +12,15 @@ const {logger} = require('./logger.js');
  * @param {object} schema - The schema of the Parquet file.
  * @returns {string} - The filename of the created Parquet file.
  */
-async function writeParquetFile(data, shipmentId, section, schema) {
-  const filename = `${path.resolve(__dirname)}/../parquetFiles/${shipmentId}_${section}.parquet`;
+async function writeParquetFile(data, section, schema, shipmentId='STAGING') {
+
+  var formattedDate = dayjs().format('YYYYMMDDHHmmssSSS');
+
+  await checkDirectory(`${path.resolve(__dirname)}/../parquetFiles`);
+  await checkDirectory(`${path.resolve(__dirname)}/../parquetFiles/${section}`);
+  
+  const filename = `${path.resolve(__dirname)}/../parquetFiles/${section}/${shipmentId}_${formattedDate}.parquet`;
+  
   logger.info(`Creating File ${filename}.`);
   
   try {
@@ -36,6 +44,19 @@ async function writeParquetFile(data, shipmentId, section, schema) {
   }
 }
 
+async function readParquetFile(filename) {
+  logger.info(`${filename}`);
+  const reader = await parquet.ParquetReader.openFile(filename);
+  const cursor = reader.getCursor();
+  const records = [];
+  let record = null;
+  while (record = await cursor.next()) {
+    records.push(record);
+  }
+  await reader.close();
+  return records;
+}
+
 /**
  * Deletes a Parquet file.
  * @param {string} filename - The name of the file to be deleted.
@@ -51,7 +72,14 @@ async function deleteParquetFile(filename) {
   });
 }
 
+async function checkDirectory(directory) {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory);
+  }
+}
+
 module.exports = {
   writeParquetFile,
+  readParquetFile,
   deleteParquetFile,
 };

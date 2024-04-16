@@ -1,13 +1,7 @@
 const { writeParquetFile,  deleteParquetFile } = require('../utils/parquet.js');
 const { SHIPMENT_STOP_SCHEME } = require('../scheme/celonis/shipmentStop.scheme.js');
 const { stopIdentifierTypes } = require('../config/constants.js');
-const { sendToCelonis } = require('../services/celonis.service.js');
-const { checkFileExistsSync } = require('../utils/util.js');
 const { logger } = require('../utils/logger.js');
-const keys = [
-  "shipment_id",
-  "stop_id"
-];
 
 /**
  * Parses the stops of a shipment and returns an array of stop objects.
@@ -54,19 +48,8 @@ async function parseStops(shipment) {
 */
 async function processStops(shipment) {
   var stops = await parseStops(shipment);
-  var fileName = await writeParquetFile(stops, shipment.id, 'stops', SHIPMENT_STOP_SCHEME);
-  if(checkFileExistsSync(fileName)) {
-    var response = await sendToCelonis(keys, fileName, 'shipment_stops');
-    var id = null;
-    if(response && response.data) {
-      id = response.data.id;
-    }
-    deleteParquetFile(fileName); 
-    return id;  
-  } else {
-    logger.warn(`File ${fileName} does not exist`);
-    return -1;
-  }
+  var fileName = await writeParquetFile(stops, 'shipment_stops', SHIPMENT_STOP_SCHEME, shipment.id);
+  logger.info(`File ${fileName} Created.`);
 }
 
 module.exports = {

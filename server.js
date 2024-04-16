@@ -11,6 +11,8 @@ const httpStatus = require('http-status');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError.js');
 
+const pushToCelonisCronJob = require('./controllers/cron.controller.js');
+
 const app = express();
 const port = PORT || 3000;
 
@@ -66,5 +68,6 @@ app.use((req, res, next) => {
 }); 
 
 app.listen(port, () => {
+  pushToCelonisCronJob.startCronJob();
   logger.info(`Server listening on port ${port}`);
 });

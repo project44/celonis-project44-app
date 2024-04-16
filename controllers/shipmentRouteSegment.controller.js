@@ -1,16 +1,7 @@
 const { writeParquetFile,  deleteParquetFile } = require('../utils/parquet.js');
 const { SHIPMENT_ROUTE_SEGMENT_SCHEME } = require('../scheme/celonis/shipmentRouteSegment.scheme.js');
 const { sourceIdentifierTypes } = require('../config/constants.js');
-const { sendToCelonis } = require('../services/celonis.service.js');
-const { checkFileExistsSync } = require('../utils/util.js');
 const { logger } = require('../utils/logger.js');
-const keys = [
-  "shipment_id",
-  "segment_id",
-  "from_stop_id",
-  "to_stop_id",
-  "mode"
-];
 
 /**
  * Parses the route segments of a shipment and returns an array of route segments.
@@ -60,19 +51,8 @@ async function parseRouteSegments(shipment) {
  */
 async function processRouteSegements(shipment) {
   var segments = await parseRouteSegments(shipment);
-  var fileName = await writeParquetFile(segments, shipment.id, 'route_segments', SHIPMENT_ROUTE_SEGMENT_SCHEME);
-  if(checkFileExistsSync(fileName)) {
-    var response = await sendToCelonis(keys, fileName, 'shipment_route_segments');
-    var id = null;
-    if(response && response.data) {
-      id = response.data.id;
-    }
-    await deleteParquetFile(fileName);
-    return id;  
-  } else {
-    logger.warn(`File ${fileName} does not exist`);
-    return -1;
-  }
+  var fileName = await writeParquetFile(segments, 'shipment_route_segments', SHIPMENT_ROUTE_SEGMENT_SCHEME, shipment.id);
+  logger.info(`File ${fileName} Created.`);
 }
 
 module.exports = {

@@ -11,6 +11,13 @@ const SHIPMENT_ATTRIBUTE_SCHEME = new parquet.ParquetSchema({
   value: { type: 'UTF8' }
 });
 
+const SHIPMENT_ATTRIBUTE_KEYS = [
+  "shipment_id",
+  "name",
+  "value"
+];
+
 module.exports = {
-  SHIPMENT_ATTRIBUTE_SCHEME
+  SHIPMENT_ATTRIBUTE_SCHEME,
+  SHIPMENT_ATTRIBUTE_KEYS
 };

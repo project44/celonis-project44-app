@@ -72,6 +72,13 @@ const SHIPMENT_EVENT_DETAIL_SCHEME = new parquet.ParquetSchema({
   container_pin: { type: 'UTF8', optional: true }
 });
 
+const SHIPMENT_EVENT_DETAIL_KEYS = [
+  "shipment_id",
+  "type",
+  "date_time",
+];
+
 module.exports = {
-  SHIPMENT_EVENT_DETAIL_SCHEME
+  SHIPMENT_EVENT_DETAIL_SCHEME,
+  SHIPMENT_EVENT_DETAIL_KEYS
 };

@@ -1,13 +1,7 @@
 const { writeParquetFile,  deleteParquetFile } = require('../utils/parquet.js');
 const { SHIPMENT_RELATED_SHIPMENT_SCHEME } = require('../scheme/celonis/shipmentRelatedShipment.scheme.js');
 const { sourceIdentifierTypes } = require('../config/constants.js');
-const { sendToCelonis } = require('../services/celonis.service.js');
-const { checkFileExistsSync } = require('../utils/util.js');
 const { logger } = require('../utils/logger.js');
-const keys = [
-  "shipment_id",
-  "related_shipment_id"
-];
 
 
 /**
@@ -47,19 +41,8 @@ async function parseRelatedShipments(shipment) {
  */
 async function processRelatedShipments(shipment) {
   var relatedShipments = await parseRelatedShipments(shipment);
-  var fileName = await writeParquetFile(relatedShipments, shipment.id, 'related_shipments', SHIPMENT_RELATED_SHIPMENT_SCHEME);
-  if(checkFileExistsSync(fileName)) {
-    var response = await sendToCelonis(keys, fileName, 'shipment_related_shipments');
-    var id = null;
-    if(response && response.data) {
-      id = response.data.id;
-    }
-    deleteParquetFile(fileName);
-    return id;  
-  } else {
-    logger.warn(`File ${fileName} does not exist`);
-    return -1;
-  }
+  var fileName = await writeParquetFile(relatedShipments, 'shipment_related_shipments', SHIPMENT_RELATED_SHIPMENT_SCHEME, shipment.id);
+  logger.info(`File ${fileName} Created.`);
 }
 
 module.exports = {
