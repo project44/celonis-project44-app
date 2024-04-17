@@ -1,5 +1,5 @@
 const { logger } = require('../utils/logger.js');
-// const { writeParquetFile, readParquetFile } = require('../utils/parquet.js');
+// const { writeParquetFile } = require('../utils/parquet.js');
 const { createJob, uploadJobFile, executeJob } = require('../services/celonis.service.js');
 const fs = require('fs');
 const path = require('path');
@@ -9,6 +9,7 @@ const { SHIPMENT_EVENT_KEYS } = require('../scheme/celonis/shipmentEvent.scheme.
 const { SHIPMENT_EVENT_DETAIL_KEYS } = require('../scheme/celonis/shipmentEventDetail.scheme.js');
 const { SHIPMENT_IDENTIFIER_KEYS } = require('../scheme/celonis/shipmentIdentifier.scheme.js');
 const { SHIPMENT_ORDER_KEYS } = require('../scheme/celonis/shipmentOrder.scheme.js');
+const { SHIPMENT_ORDER_ITEM_KEYS } = require('../scheme/celonis/shipmentOrderItem.scheme.js');
 const { SHIPMENT_POSITION_KEYS } = require('../scheme/celonis/shipmentPosition.scheme.js');
 const { SHIPMENT_RELATED_SHIPMENT_KEYS } = require('../scheme/celonis/shipmentRelatedShipment.scheme.js');
 const { SHIPMENT_ROUTE_SEGMENT_KEYS } = require('../scheme/celonis/shipmentRouteSegment.scheme.js');
@@ -21,7 +22,7 @@ const { SHIPMENT_STOP_KEYS } = require('../scheme/celonis/shipmentStop.scheme.js
  */
 async function push() {
   try{
-    logger.debug('Pushing files to Celonis.');
+    logger.info('Pushing files to Celonis.');
     // Check to see if root directory exist 'parquetFiles'
     const rootDirName = `${path.resolve(__dirname)}/../parquetFiles`;
     // if exists
@@ -36,7 +37,7 @@ async function push() {
   
           // read directories
           const dirName = `${rootDirName}/${directories[d]}`;
-          logger.debug(`Reading Directory ${dirName}.`);
+          logger.info(`Reading Directory ${dirName}.`);
   
           var files = fs.readdirSync(dirName);
           logger.info(`Files: ${dirName} ${files.length}`);
@@ -47,7 +48,7 @@ async function push() {
             for(var f = 0; f < files.length; f++) {
   
               const fileName = path.join(dirName, files[f]);
-              logger.debug(`Reading File ${fileName}.`);
+              logger.info(`Reading File ${fileName}.`);
               // Upload file to Celonis
               await uploadJobFile(job.data.id, fileName);
               // Delete file from staging
@@ -56,11 +57,11 @@ async function push() {
             // Execute Job
             await executeJob(job.data.id);
           } else {
-            logger.debug(`No files found in ${dirName}.`);
+            logger.info(`No files found in ${dirName}.`);
           };   
         };
       } else {
-        logger.debug(`No directories found in ${rootDirName}.`);
+        logger.info(`No directories found in ${rootDirName}.`);
       }
     }
   } catch (error) {
@@ -86,6 +87,8 @@ function getKeys(dirname) {
       return SHIPMENT_IDENTIFIER_KEYS;
     case 'shipment_orders':
       return SHIPMENT_ORDER_KEYS;
+    case 'shipment_order_items':
+      return SHIPMENT_ORDER_ITEM_KEYS;
     case 'shipment_positions':
       return SHIPMENT_POSITION_KEYS;
     case 'shipment_related_shipments':

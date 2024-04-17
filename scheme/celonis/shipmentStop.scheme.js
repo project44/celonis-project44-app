@@ -31,6 +31,10 @@ const SHIPMENT_STOP_SCHEME = new parquet.ParquetSchema({
   unknown: { type: 'UTF8', optional: true }
 });
 
+/**
+ * Array of keys for the shipment stop.
+ * @type {string[]}
+ */
 const SHIPMENT_STOP_KEYS = [
   "shipment_id",
   "stop_id"

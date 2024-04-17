@@ -11,6 +11,10 @@ const SHIPMENT_IDENTIFIER_SCHEME = new parquet.ParquetSchema({
   value: { type: 'UTF8' },
 });
 
+/**
+ * Array of keys for the shipment identifier.
+ * @type {string[]}
+ */
 const SHIPMENT_IDENTIFIER_KEYS = [
   "shipment_id",
   "type",

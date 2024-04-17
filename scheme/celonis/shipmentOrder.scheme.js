@@ -1,8 +1,10 @@
 const parquet = require('parquetjs');
 
-// Parquet schema for shipment order data.
-// Does not include all fields. Missing attributes, shipmentIds (if order is on multiple shipments, 
-// only primary shipmentId is included), and relatedOrderIds.
+/**
+ * Parquet schema for the shipment order.
+ *
+ * @type {parquet.ParquetSchema}
+ */
 const SHIPMENT_ORDER_SCHEME = new parquet.ParquetSchema({
  shipment_id: { type: 'UTF8' },
  order_id: { type: 'UTF8' },
@@ -117,11 +119,14 @@ const SHIPMENT_ORDER_SCHEME = new parquet.ParquetSchema({
  bill_contact_email: { type: 'UTF8', optional: true }
 });
 
+/**
+ * Array of keys for the shipment order.
+ * @type {string[]}
+ */
 const SHIPMENT_ORDER_KEYS = [
   "shipment_id",
   "order_id"
 ];
-
 
 module.exports = {
   SHIPMENT_ORDER_SCHEME,

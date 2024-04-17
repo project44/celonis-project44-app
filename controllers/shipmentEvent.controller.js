@@ -1,4 +1,4 @@
-const { writeParquetFile,  deleteParquetFile } = require('../utils/parquet.js');
+const { writeParquetFile } = require('../utils/parquet.js');
 const { SHIPMENT_EVENT_SCHEME } = require('../scheme/celonis/shipmentEvent.scheme.js');
 const { logger } = require('../utils/logger.js');
 

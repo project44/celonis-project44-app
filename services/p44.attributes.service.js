@@ -24,6 +24,12 @@ async function getAttributes() {
   }
 }
 
+/**
+ * Processes the shipment attributes.
+ * 
+ * @param {Object} shipment - The shipment object.
+ * @returns {Promise<Object>} - A promise that resolves to the attributes.
+ */
 async function processShipmentAttributes(shipment) {  
   var attributes = await getAttributes();
   return attributes;

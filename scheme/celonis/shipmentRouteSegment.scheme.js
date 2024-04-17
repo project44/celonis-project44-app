@@ -73,6 +73,10 @@ const SHIPMENT_ROUTE_SEGMENT_SCHEME = new parquet.ParquetSchema({
   container_pin: { type: 'UTF8', optional: true }
 });
 
+/**
+ * Array of keys for the shipment route segment.
+ * @type {string[]}
+ */
 const SHIPMENT_ROUTE_SEGMENT_KEYS = [
   "shipment_id",
   "segment_id",

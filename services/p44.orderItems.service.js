@@ -4,19 +4,21 @@ const { logger } = require('../utils/logger.js');
 
 
 /**
- * Retrieves orders for a given shipment ID.
+ * Retrieves order items for a given shipment and order.
  *
  * @param {string} shipmentId - The ID of the shipment.
- * @returns {Promise<Array>} - A promise that resolves to an array of orders.
+ * @param {string} orderId - The ID of the order.
+ * @returns {Array} - An array of order items.
  */
-async function getOrders(shipmentId) {
+async function getOrderItems(shipmentId, orderId) {
   let page = 1;
   let pageSize = 100;
   let totalPages = 1;
 
-  let url = `${ P44_API_SERVER }/api/v4/inventory/orders/search?page=${page}&pageSize=${pageSize}`;
+  let url = `${ P44_API_SERVER }/api/v4/inventory/items/search?page=${page}&size=${pageSize}`;
 
   let body = {
+    "orderIds": [orderId],
     "shipmentIds": [shipmentId]
   }
 
@@ -33,7 +35,7 @@ async function getOrders(shipmentId) {
       response = response.concat(res.data.results);
       page++;
     } catch (error) {
-      logger.error(`Failed to get orders: ${error.message}`);
+      logger.error(`Failed to get order items: ${error.message}`);
       return response;
     }
   } while (page <= totalPages);
@@ -42,5 +44,5 @@ async function getOrders(shipmentId) {
 }
 
 module.exports = {
-  getOrders
+  getOrderItems
 };

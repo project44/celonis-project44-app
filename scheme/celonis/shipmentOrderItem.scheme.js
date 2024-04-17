@@ -1,18 +1,23 @@
 const parquet = require('parquetjs');
 
+/**
+ * Parquet schema for the shipment order item.
+ *
+ * @type {parquet.ParquetSchema}
+ */
 const SHIPMENT_ORDER_ITEM_SCHEME = new parquet.ParquetSchema({
   shipment_id: { type: 'UTF8' },
   order_id: { type: 'UTF8' },
   order_item_id: { type: 'UTF8' },
   consume_by_date: { type: 'UTF8', optional: true },
   description: { type: 'UTF8', optional: true },
-  cubic_length: { type: 'UTF8', optional: true },
-  cubic_width: { type: 'UTF8', optional: true },
-  cubic_height: { type: 'UTF8', optional: true },
+  cubic_length: { type: 'FLOAT', optional: true },
+  cubic_width: { type: 'FLOAT', optional: true },
+  cubic_height: { type: 'FLOAT', optional: true },
   length_unit: { type: 'UTF8', optional: true },
   package_type: { type: 'UTF8', optional: true },
-  quantity: { type: 'UTF8', optional: true },
-  weight: { type: 'UTF8', optional: true },
+  quantity: { type: 'FLOAT', optional: true },
+  weight: { type: 'FLOAT', optional: true },
   weigh_unit: { type: 'UTF8', optional: true },
   department_id: { type: 'UTF8', optional: true },
   sub_department_id: { type: 'UTF8', optional: true },
@@ -49,6 +54,17 @@ const SHIPMENT_ORDER_ITEM_SCHEME = new parquet.ParquetSchema({
   universal_product_code: { type: 'UTF8', optional: true }
 });
 
+/**
+ * Array of keys for a shipment order item.
+ * @type {string[]}
+ */
+const SHIPMENT_ORDER_ITEM_KEYS = [
+  "shipment_id",
+  "order_id",
+  "order_item_id"
+];
+
 module.exports = {
-  SHIPMENT_ORDER_ITEM_SCHEME
+  SHIPMENT_ORDER_ITEM_SCHEME,
+  SHIPMENT_ORDER_ITEM_KEYS
 };

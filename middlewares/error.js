@@ -3,6 +3,14 @@ const config = require('../config/config');
 const logger = require('../utils/logger');
 const {ApiError} = require('../utils/ApiError');
 
+/**
+ * Converts an error to an instance of ApiError.
+ *
+ * @param {Error} err - The error to be converted.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const errorConverter = (err, req, res, next) => {
   let error = err;
   if (!(error instanceof ApiError)) {
@@ -15,6 +23,14 @@ const errorConverter = (err, req, res, next) => {
 };
 
 // eslint-disable-next-line no-unused-vars
+/**
+ * Error handler middleware.
+ *
+ * @param {Error} err - The error object.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {

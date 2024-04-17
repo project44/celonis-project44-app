@@ -9,6 +9,10 @@ const { processEventDetails } = require('./shipmentEventDetail.controller.js');
 const { processPositions } = require('./shipmentPosition.controller.js');
 const { processShipmentAttributes } = require('./shipmentAttributes.controller.js');
 const { processOrders } = require('./shipmentOrder.controller.js');
+const { processOrderItems } = require('./shipmentOrderItem.controller.js');
+
+const { PROJECT44_INCLUDE_ORDERS, PROJECT44_INCLUDE_ORDER_ITEMS } = require('../config/config.js');
+const logger = require('../utils/logger.js');
 
 /**
  * Handles the receipt of a webhook from project44.
@@ -36,8 +40,14 @@ async function parseAndProcessShipment(req, res, next) {
   await processEventDetails(req.body.events, req.body.shipment);
   await processPositions(req.body.positions, req.body.shipment);
   await processShipmentAttributes(req.body.shipment);
-  await processOrders(req.body.shipment);
-  
+
+  if(PROJECT44_INCLUDE_ORDERS) {
+    await processOrders(req.body.shipment);
+  }
+
+  if(PROJECT44_INCLUDE_ORDER_ITEMS) {
+    await processOrderItems(req.body.shipment);
+  }  
 }
 
 module.exports = {

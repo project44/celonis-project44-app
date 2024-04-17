@@ -21,28 +21,6 @@ const data = {
 }
 
 /**
- * Sends data to Celonis.
- * @param {Array} keys - The keys for authentication.
- * @param {string} fileName - The name of the file to be uploaded.
- * @param {string} tableName - The name of the table in Celonis.
- * @returns {Promise<void>} - A promise that resolves when the data is sent successfully.
- */
-const sendToCelonis = async (keys, fileName, tableName) => {
-  try {
-    var jobResp = await createJob(keys, tableName);
-    logger.info(`Job created successfully: ${tableName} ID: ${jobResp.data.id} ${fileName}`);
-    
-    await uploadParquetFile(jobResp.data.id, fileName);  
-    logger.info(`File ${fileName} uploaded successfully`);
-  
-    await executeJob(jobResp.data.id);      
-    logger.info(`Job ${jobResp.data.id} Executed successfully`);
-  } catch (error) {
-    logger.error(error)
-  }
-}
-
-/**
  * STEP 1: Creates a job in the Celonis system for data push.
  * @param {Array<string>} keys - An array of strings representing the keys of the parquet file.
  * @param {string} targetName - The name of the target for the job.
@@ -64,6 +42,7 @@ const createJob = async (keys, targetName, type='DELTA') => {
     }
     return response;
   } catch (error) {
+    logger.error(`createJob: ${url} ${error}`);
     throw error;
   }
 };
@@ -95,6 +74,7 @@ const uploadJobFile = async (jobId, filePath) => {
     }
     return response;
   } catch (error) {
+    logger.error(`uploadJobFile: ${url} ${error}`);
     throw error;
   }
 };
@@ -116,12 +96,12 @@ const executeJob = async (jobId) => {
 
     return response;
   } catch (error) {
+    logger.error(`executeJob: ${url} ${error}`);
     throw error;
   }
 };
 
 module.exports = {
-  sendToCelonis,
   createJob,
   uploadJobFile,
   executeJob

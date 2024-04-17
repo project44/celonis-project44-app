@@ -30,11 +30,14 @@ const SHIPMENT_EVENT_SCHEME = new parquet.ParquetSchema({
   planned_end_date_time: { type: 'UTF8', optional: true }
 });
 
+/**
+ * Array of keys for shipment events.
+ * @type {string[]}
+ */
 const SHIPMENT_EVENT_KEYS = [
   "shipment_id",
   "type"
 ];
-
 
 module.exports = {
   SHIPMENT_EVENT_SCHEME,

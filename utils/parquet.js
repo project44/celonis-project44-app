@@ -12,7 +12,7 @@ const dayjs = require('dayjs');
  * @param {object} schema - The schema of the Parquet file.
  * @returns {string} - The filename of the created Parquet file.
  */
-async function writeParquetFile(data, section, schema, shipmentId='STAGING') {
+async function writeParquetFile(data, section, schema, shipmentId) {
 
   var formattedDate = dayjs().format('YYYYMMDDHHmmssSSS');
 
@@ -27,6 +27,7 @@ async function writeParquetFile(data, section, schema, shipmentId='STAGING') {
     if(data && data.length > 0) {
       const writer = await parquet.ParquetWriter.openFile(schema, filename, {useDataPageV2: false});
       for (let i = 0; i < data.length; i++) {
+        logger.info(JSON.stringify(data[i]));
         await writer.appendRow(data[i]);
       }
       await writer.close();
@@ -40,21 +41,8 @@ async function writeParquetFile(data, section, schema, shipmentId='STAGING') {
       
   } catch (error) {
     logger.error(error);
-    return null;    
+    return filename;    
   }
-}
-
-async function readParquetFile(filename) {
-  logger.info(`${filename}`);
-  const reader = await parquet.ParquetReader.openFile(filename);
-  const cursor = reader.getCursor();
-  const records = [];
-  let record = null;
-  while (record = await cursor.next()) {
-    records.push(record);
-  }
-  await reader.close();
-  return records;
 }
 
 /**
@@ -72,6 +60,11 @@ async function deleteParquetFile(filename) {
   });
 }
 
+/**
+ * Checks if a directory exists and creates it if it doesn't.
+ * @param {string} directory - The directory path to check/create.
+ * @returns {Promise<void>} - A promise that resolves when the directory is checked/created.
+ */
 async function checkDirectory(directory) {
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory);
@@ -80,6 +73,5 @@ async function checkDirectory(directory) {
 
 module.exports = {
   writeParquetFile,
-  readParquetFile,
   deleteParquetFile,
 };

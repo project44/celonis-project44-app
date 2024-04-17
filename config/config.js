@@ -1,13 +1,13 @@
 const PORT = process.env.PORT || 3000;
-const ENV = process.env.ENVIRONMENT || 'DEV';
+const ENV = process.env.ENVIRONMENT || 'development';
 const P44_API_SERVER = process.env.P44_API_SERVER || 'https://na12.api.project44.com';
 const CELONIS_API_SERVER = process.env.CELONIS_API_SERVER;
 const CELONIS_API_KEY = process.env.CELONIS_API_KEY;
 const CELONIS_POOL_ID = process.env.CELONIS_POOL_ID;
 const PROJECT44_CLIENT_ID = process.env.PROJECT44_CLIENT_ID;
 const PROJECT44_CLIENT_SECRET = process.env.PROJECT44_CLIENT_SECRET;
-const PROJECT44_INCLUDE_ORDERS = process.env.PROJECT44_INCLUDE_ORDERS || 'true';
-const PROJECT44_INCLUDE_ORDER_ITEMS = process.env.PROJECT44_INCLUDE_ORDER_ITEMS || 'true';
+const PROJECT44_INCLUDE_ORDERS = process.env.PROJECT44_INCLUDE_ORDERS === 'true' ? true : false;
+const PROJECT44_INCLUDE_ORDER_ITEMS = process.env.PROJECT44_INCLUDE_ORDER_ITEMS === 'true' ? true : false;
 const CRON_SCHEDULE = process.env.CRON_SCHEDULE || '*/15 * * * *';
 
 module.exports = {
@@ -19,5 +19,7 @@ module.exports = {
   CELONIS_POOL_ID,
   PROJECT44_CLIENT_ID,
   PROJECT44_CLIENT_SECRET,
-  CRON_SCHEDULE
+  CRON_SCHEDULE,
+  PROJECT44_INCLUDE_ORDERS,
+  PROJECT44_INCLUDE_ORDER_ITEMS
 };
