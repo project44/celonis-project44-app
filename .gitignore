@@ -11,6 +11,7 @@ service.yaml
 # out
 *.out
 *.parquet
+*audit.json
 
 # Excel
 *.xlsx
