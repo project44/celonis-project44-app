@@ -1,0 +1,35 @@
+{
+  "name": "celonis-project44-app",
+  "version": "1.0.0",
+  "description": "The purpose of this application is to demonstrate the use of integrating the project44 High-Velocity Supply Chain Platform with the Celonis Intelligent Business Cloud API.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ENVIRONMENT=development PORT=3001 nodemon server.js"
+  },
+  "keywords": [
+    "celonis",
+    "project44",
+    "node.js",
+    "node"
+  ],
+  "author": "Ken D. Nelson, Principal Solutions Engineer, project44, Inc.",
+  "license": "MIT",
+  "dependencies": {
+    "apache-arrow": "^15.0.1",
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.10",
+    "express": "^4.18.3",
+    "form-data": "^4.0.0",
+    "formdata-node": "^6.0.3",
+    "http-status": "^1.7.4",
+    "node-cron": "^3.0.3",
+    "parquetjs": "^0.11.2",
+    "winston": "^3.12.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
