@@ -8,7 +8,7 @@ const PROJECT44_CLIENT_ID = process.env.PROJECT44_CLIENT_ID;
 const PROJECT44_CLIENT_SECRET = process.env.PROJECT44_CLIENT_SECRET;
 const PROJECT44_INCLUDE_ORDERS = process.env.PROJECT44_INCLUDE_ORDERS === 'true' ? true : false;
 const PROJECT44_INCLUDE_ORDER_ITEMS = process.env.PROJECT44_INCLUDE_ORDER_ITEMS === 'true' ? true : false;
-const CRON_SCHEDULE = process.env.CRON_SCHEDULE || '*/15 * * * *';
+const CRON_SCHEDULE = process.env.CRON_SCHEDULE || '*/2 * * * *';
 
 module.exports = {
   PORT,
