@@ -36,9 +36,6 @@ const createJob = async (keys, targetName, type='DELTA') => {
 
   const url = `${CELONIS_API_SERVER}/integration/api/v1/data-push/${CELONIS_POOL_ID}/jobs/`;
 
-  logger.info(`Creating job for ${targetName} at ${url}`);
-  logger.info(`Headers: ${JSON.stringify(headers)}`);
-  logger.info(`Data: ${JSON.stringify(data)}`);
   try {
     const response = await axios.post(url, data, { headers });
     if (response.status !== 200) {
