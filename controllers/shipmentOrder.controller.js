@@ -118,7 +118,7 @@ async function parseOrders(orders, shipment_id) {
     o.bill_to_alt_contact_phone_country_code = order.billToLocation && order.billToLocation.contact  && order.billToLocation.contact.phoneNumber2CountryCode ? order.billToLocation.contact.phoneNumber2CountryCode : null;
     o.bill_to_alt_contact_phone = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.phoneNumber2 ? order.billToLocation.contact.phoneNumber2 : null;
     o.bill_to_fax_contact_phone_country_code = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.faxNumberCountryCode ? order.billToLocation.contact.faxNumberCountryCode : null;
-    o.bill_to_fax_contact_phone = order.vendorLocation && order.billToLocation.contact && order.billToLocation.contact.faxNumber ? order.billToLocation.contact.faxNumber : null;
+    o.bill_to_fax_contact_phone = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.faxNumber ? order.billToLocation.contact.faxNumber : null;
     o.bill_to_contact_email = order.billToLocation && order.billToLocation.contact && order.billToLocation.contact.email ? order.billToLocation.contact.email : null;
     payload.push(o);
   }
