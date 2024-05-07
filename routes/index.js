@@ -9,6 +9,10 @@ const defaultRoutes = [
     path: '/api/webhook/fromp44',
     route: webhookRoute,
   }, 
+  {
+    path: '/api/removefiles',
+    route: webhookRoute
+  }
 ];
 
 defaultRoutes.forEach((route) => {
