@@ -31,9 +31,12 @@ async function parseStops(shipment) {
      s[identifierType] = null;
    };
 
-   for( const identifier of stop.location.identifiers) {
-     s[identifier.type.toLowerCase()] = identifier.value;
-   }
+   if(stop.location && stop.location.identifiers && stop.location.identifiers.length > 0) {
+      for( const identifier of stop.location.identifiers) {
+        s[identifier.type.toLowerCase()] = identifier.value;
+      }
+    }
+
    stops.push(s);
   }
  return stops;
