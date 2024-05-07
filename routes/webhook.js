@@ -7,9 +7,4 @@ router
     controller.receivePost(req, res, next);
   });
  
-router
-  .delete('/removefiles', (req, res, next) => {
-  controller.receiveDeleteFiles(req, res, next);
-});
-
 module.exports = router;

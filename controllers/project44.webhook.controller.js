@@ -52,49 +52,6 @@ async function parseAndProcessShipment(req, res, next) {
   }  
 }
 
-const receiveDeleteFiles = async(req, res, next) => {  
-  try{
-    logger.info('Deleting files from server.');
-    // Check to see if root directory exist 'parquetFiles'
-    const rootDirName = `${path.resolve(__dirname)}/../parquetFiles`;
-    // if exists
-    if (fs.existsSync(rootDirName)) {
-      var directories = fs.readdirSync(rootDirName);
-      if(directories.length > 0) {
-  
-        for(var d = 0; d < directories.length; d++) {
-  
-          // Get the table keys to send to Celonis
-          var keys = getKeys(directories[d]);
-  
-          // read directories
-          const dirName = `${rootDirName}/${directories[d]}`;
-          logger.info(`Reading Directory ${dirName}.`);
-  
-          var files = fs.readdirSync(dirName);
-          logger.info(`Files: ${dirName} ${files.length}`);
-          if(files.length > 0) {
-            for(var f = 0; f < files.length; f++) {
-  
-              const fileName = path.join(dirName, files[f]);
-              logger.info(`Deleting File ${fileName}.`);
-              // Delete file from staging
-              await fs.unlinkSync(fileName);
-            } 
-          } else {
-            logger.info(`No files found in ${dirName}.`);
-          };   
-        };
-      } else {
-        logger.info(`No directories found in ${rootDirName}.`);
-      }
-    }
-  } catch (error) {
-    logger.error(`Error pushing files to Celonis: ${error}`);
-  } 
-}
-
 module.exports = {
-  receivePost,
-  receiveDeleteFiles
+  receivePost
 }
