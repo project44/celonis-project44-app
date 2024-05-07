@@ -43,8 +43,9 @@ async function push() {
           logger.info(`Files: ${dirName} ${files.length}`);
           if(files.length > 0) {
             // Create Job
+            logger.info(`Creating Job for ${directories[d]}.`);
             var job = await createJob(keys, directories[d]);  
-  
+            logger.info(`Job Created for ${directories[d]}: ${job.data.id}`);
             for(var f = 0; f < files.length; f++) {
   
               const fileName = path.join(dirName, files[f]);
