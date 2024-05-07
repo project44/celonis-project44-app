@@ -12,7 +12,7 @@ const { logger } = require('../utils/logger.js');
 async function parseRelatedShipments(shipment) {
   const payload = [];
 
-  if (shipment.relatedShipments && Array.isArray(shipment.relatedShipments)) {
+  if (shipment.relatedShipments && shipment.relatedShipments.length > 0) {
     for (const relatedShipment of shipment.relatedShipments) {
       const r = {
         shipment_id: shipment.id,
