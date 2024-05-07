@@ -27,7 +27,7 @@ async function writeParquetFile(data, section, schema, shipmentId) {
     if(data && data.length > 0) {
       const writer = await parquet.ParquetWriter.openFile(schema, filename, {useDataPageV2: false});
       for (let i = 0; i < data.length; i++) {
-        logger.info(JSON.stringify(data[i]));
+        // logger.info(JSON.stringify(data[i]));
         await writer.appendRow(data[i]);
       }
       await writer.close();
