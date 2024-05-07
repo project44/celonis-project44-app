@@ -43,8 +43,10 @@ async function parseRelatedShipments(shipment) {
  */
 async function processRelatedShipments(shipment) {
   var relatedShipments = await parseRelatedShipments(shipment);
-  var fileName = await writeParquetFile(relatedShipments, 'shipment_related_shipments', SHIPMENT_RELATED_SHIPMENT_SCHEME, shipment.id);
-  logger.info(`File ${fileName} Created.`);
+  if(relatedShipments.length === 0) {
+    var fileName = await writeParquetFile(relatedShipments, 'shipment_related_shipments', SHIPMENT_RELATED_SHIPMENT_SCHEME, shipment.id);
+    logger.info(`File ${fileName} Created.`);
+  }
 }
 
 module.exports = {
