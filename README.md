@@ -91,7 +91,7 @@ If configuring to support order visiblity then you will also need
 Now you are ready to deploy the application to your cloud platform of choice or on internal servers. Make sure you include the environment variables listed above. Retain the URL information as you will need it in the next step.
 
 ## STEP 4 - Create and Configure Webhook
-Once you have created and configured your oAuth account you can create the webhook. You may create the webhook using any account that has the authority to create a webhook. For information on creating a webhook please review the [project44 Guide to Registering Client Webhooks](https://developers.project44.com/api-reference/p44-api-reference/tag/Webhook/). The URL will be the base URL of the location plus `/webhook/from/project44` or (`[Base URL]//webhook/from/project44`). Remember the name of the webhook to send to project44 support in the next step.
+Once you have created and configured your oAuth account you can create the webhook. You may create the webhook using any account that has the authority to create a webhook. For information on creating a webhook please review the [project44 Guide to Registering Client Webhooks](https://developers.project44.com/api-reference/p44-api-reference/tag/Webhook/). The URL will be the base URL of the location plus `/v1/api/webhook/from/project44` or (`[Base URL]/v1/api/webhook/from/project44`). Remember the name of the webhook to send to project44 support in the next step.
 
 ## STEP 5 - Contact project44 to Enable Webhook
 Final step to enable the webhook is to contact support@project44.com to enable the webhook and provide the webhook name.
