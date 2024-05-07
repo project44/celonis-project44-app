@@ -8,6 +8,11 @@ yarn-error.log*
 # Infrastructure as code
 service.yaml
 
+# image files
+*.png
+*.jpg
+images
+
 # out
 *.out
 *.parquet
