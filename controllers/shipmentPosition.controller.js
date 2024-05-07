@@ -31,8 +31,8 @@ async function parsePositions(positions, shipment) {
  * @param {Object} shipment - The shipment object.
  * @returns {Promise<void>} - A promise that resolves when the processing is complete.
  */
-async function processPositions(positions, shipment) {
-  var positions = await parsePositions(positions, shipment);
+async function processPositions(positionsIn, shipment) {
+  var positions = await parsePositions(positionsIn, shipment);
   var fileName = await writeParquetFile(positions, 'shipment_positions', SHIPMENT_POSITION_SCHEME, shipment.id);
   logger.info(`File ${fileName} Created.`);
 }
