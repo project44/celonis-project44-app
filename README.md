@@ -40,7 +40,7 @@ In Addition, the sync process can be configured to query for known orders and or
 | PROJECT44_CLIENT_SECRET | Client Secret used to execute project44 API calls (see previous comment). |
 | PROJECT44_INCLUDE_ORDERS | Flag to let the webhook know if it should pull order information. Default is false. |
 | PROJECT44_INCLUDE_ORDER_ITEMS | Flag to let the webhook know if it should pull order item information. Default is false. |
-| CRON_SCHEDULE | Configures a cron job to batch process sending jobs to Celonis. The default is to run every 5 minutes - '*/5 * * * *'. It is not recommended that this run less frequent. |
+| CRON_SCHEDULE | Configures a cron job to batch process sending jobs to Celonis. The default is to run every 2 minutes - '*/2 * * * *'. It is not recommended that this run less frequent. |
 
 
 
