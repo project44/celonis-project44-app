@@ -6,7 +6,6 @@ const parquet = require('parquetjs');
  * @type {parquet.ParquetSchema}
  */
 const SHIPMENT_ORDER_ITEM_SCHEME = new parquet.ParquetSchema({
-  shipment_id: { type: 'UTF8' },
   order_id: { type: 'UTF8' },
   order_item_id: { type: 'UTF8' },
   consume_by_date: { type: 'UTF8', optional: true },
@@ -59,7 +58,6 @@ const SHIPMENT_ORDER_ITEM_SCHEME = new parquet.ParquetSchema({
  * @type {string[]}
  */
 const SHIPMENT_ORDER_ITEM_KEYS = [
-  "shipment_id",
   "order_id",
   "order_item_id"
 ];

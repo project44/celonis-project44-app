@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { P44_API_SERVER } = require('../config/config.js');
 const { logger } = require('../utils/logger.js');
+const { json } = require('express');
 
 
 /**
@@ -10,7 +11,7 @@ const { logger } = require('../utils/logger.js');
  * @param {string} orderId - The ID of the order.
  * @returns {Array} - An array of order items.
  */
-async function getOrderItems(shipmentId, orderId) {
+async function getOrderItems(orderId) {
   let page = 1;
   let pageSize = 100;
   let totalPages = 1;
@@ -18,8 +19,7 @@ async function getOrderItems(shipmentId, orderId) {
   let url = `${ P44_API_SERVER }/api/v4/inventory/items/search?page=${page}&size=${pageSize}`;
 
   let body = {
-    "orderIds": [orderId],
-    "shipmentIds": [shipmentId]
+    "orderIds": [orderId]
   }
 
   let headers = {

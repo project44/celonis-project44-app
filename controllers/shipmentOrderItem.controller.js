@@ -4,12 +4,11 @@ const { logger } = require('../utils/logger.js');
 const { getOrderItems }  = require('../services/p44.orderItems.service.js');
 const { getOrders } = require('../services/p44.orders.service.js');
 
-async function parseOrderItems(items, orderId, shipmentId) {
+async function parseOrderItems(items, orderId) {
   const payload = [];
 
   for(const item of items) {
     var i = {
-      shipment_id: shipmentId,
       order_id: orderId,
       order_item_id: item.id
     }
@@ -117,13 +116,12 @@ async function processOrderItems(shipment) {
   }
 
   for(const order of orders) {
-    var orderItems = await getOrderItems( shipment.id, order.id );
+    var orderItems = await getOrderItems( order.id );
     if(orderItems == null || orderItems.length == 0) {
       logger.error(`No Order Items found for Shipment ${shipment.id} Order: ${order.id}`);
       return;
     }
     var parsedOrderItems = await parseOrderItems(orderItems, order.id, shipment.id);  
-    logger.info(JSON.stringify(parsedOrderItems));
     var fileName = await writeParquetFile(parsedOrderItems, 'shipment_order_items', SHIPMENT_ORDER_ITEM_SCHEME, `${shipment.id}_${order.id}`);
     logger.info(`File ${fileName} Created.`);  
   }
