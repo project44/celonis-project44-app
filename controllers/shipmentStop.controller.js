@@ -11,33 +11,35 @@ const { logger } = require('../utils/logger.js');
  */
 async function parseStops(shipment) {
   const stops = [];
-  for( const stop of shipment.routeInfo.stops) {
-   var s = {
-     shipment_id: shipment.id,
-     stop_id: stop.id,
-     address_line_1: stop.location ? stop.location.address[0] || null : null,
-     address_line_2: stop.location ? stop.location.address[1] || null : null,
-     address_line_3: stop.location ? stop.location.address[2] || null : null,
-     city: stop.location && stop.location.address ? stop.location.address.city || null : null,
-     state: stop.location && stop.location.address ? stop.location.address.state || null : null,
-     postal_code: stop.location && stop.location.address ? stop.location.address.postalCode || null : null,
-     country: stop.location && stop.location.address ? stop.location.address.country || null : null,
-     time_zone: stop.location ? stop.location.timeZone : null,
-     latitude: stop.location && stop.location.coordinates ? stop.location.coordinates.latitude : null,
-     longitude: stop.location && stop.location.coordinates ? stop.location.coordinates.longitude : null
-   };
-
-   for(const identifierType of stopIdentifierTypes) {
-     s[identifierType] = null;
-   };
-
-   if(stop.location && stop.location.identifiers && stop.location.identifiers.length > 0) {
-      for( const identifier of stop.location.identifiers) {
-        s[identifier.type.toLowerCase()] = identifier.value;
-      }
+  if(shipment.routeInfo && shipment.routeInfo.stops && shipment.routeInfo.stops.length > 0 ) {
+    for( const stop of shipment.routeInfo.stops) {
+      var s = {
+        shipment_id: shipment.id,
+        stop_id: stop.id,
+        address_line_1: stop.location ? stop.location.address[0] || null : null,
+        address_line_2: stop.location ? stop.location.address[1] || null : null,
+        address_line_3: stop.location ? stop.location.address[2] || null : null,
+        city: stop.location && stop.location.address ? stop.location.address.city || null : null,
+        state: stop.location && stop.location.address ? stop.location.address.state || null : null,
+        postal_code: stop.location && stop.location.address ? stop.location.address.postalCode || null : null,
+        country: stop.location && stop.location.address ? stop.location.address.country || null : null,
+        time_zone: stop.location ? stop.location.timeZone : null,
+        latitude: stop.location && stop.location.coordinates ? stop.location.coordinates.latitude : null,
+        longitude: stop.location && stop.location.coordinates ? stop.location.coordinates.longitude : null
+      };
+   
+      for(const identifierType of stopIdentifierTypes) {
+        s[identifierType] = null;
+      };
+   
+      if(stop.location && stop.location.identifiers && stop.location.identifiers.length > 0) {
+         for( const identifier of stop.location.identifiers) {
+           s[identifier.type.toLowerCase()] = identifier.value;
+         }
+       }
+   
+      stops.push(s);   
     }
-
-   stops.push(s);
   }
  return stops;
 }
