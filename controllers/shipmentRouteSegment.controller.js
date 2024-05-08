@@ -11,32 +11,34 @@ const { logger } = require('../utils/logger.js');
 async function parseRouteSegments(shipment) {
   const routeSegments = [];
 
-  for (const segment of shipment.routeInfo.routeSegments) {
-    const s = {
-      shipment_id: shipment.id,
-      segment_id: segment.id,
-      from_stop_id: segment.fromStopId,
-      to_stop_id: segment.toStopId,
-      mode: segment.transportationMode,
-      emissions_distance_value: segment.emissions && segment.emissions.distance ? segment.emissions.distance.value || null : null,
-      emissions_distance_unit: segment.emissions && segment.emissions.distance ? segment.emissions.distance.unit || null : null,
-      emissions_co2_intensity_value: segment.emissions && segment.emissions.co2EmissionIntensity ? segment.emissions.co2EmissionIntensity.value || null : null,
-      emissions_co2_intensity_unit: segment.emissions && segment.emissions.co2EmissionIntensity ? segment.emissions.co2EmissionIntensity.unit || null : null,
-      emissions_total_value: segment.emissions && segment.emissions.totalCO2Emissions ? segment.emissions.totalCO2Emissions.value || null : null, 
-      emissions_total_unit: segment.emissions && segment.emissions.totalCO2Emissions ? segment.emissions.totalCO2Emissions.unit || null : null
-    };
-
-    for (const identifierType of sourceIdentifierTypes) {
-      s[identifierType] = null;
-    }
-
-    if( segment.identifiers && Array.isArray(segment.identifiers)) {
-      for (const identifier of segment.identifiers) {
-        s[identifier.type.toLowerCase()] = identifier.value;
+  if(shipment.routeInfo && shipment.routeInfo.routeSegments && shipment.routeInfo.routeSegments.length > 0) {
+    for (const segment of shipment.routeInfo.routeSegments) {
+      const s = {
+        shipment_id: shipment.id,
+        segment_id: segment.id,
+        from_stop_id: segment.fromStopId,
+        to_stop_id: segment.toStopId,
+        mode: segment.transportationMode,
+        emissions_distance_value: segment.emissions && segment.emissions.distance ? segment.emissions.distance.value || null : null,
+        emissions_distance_unit: segment.emissions && segment.emissions.distance ? segment.emissions.distance.unit || null : null,
+        emissions_co2_intensity_value: segment.emissions && segment.emissions.co2EmissionIntensity ? segment.emissions.co2EmissionIntensity.value || null : null,
+        emissions_co2_intensity_unit: segment.emissions && segment.emissions.co2EmissionIntensity ? segment.emissions.co2EmissionIntensity.unit || null : null,
+        emissions_total_value: segment.emissions && segment.emissions.totalCO2Emissions ? segment.emissions.totalCO2Emissions.value || null : null, 
+        emissions_total_unit: segment.emissions && segment.emissions.totalCO2Emissions ? segment.emissions.totalCO2Emissions.unit || null : null
+      };
+  
+      for (const identifierType of sourceIdentifierTypes) {
+        s[identifierType] = null;
       }
-    }
-
-    routeSegments.push(s);
+  
+      if( segment.identifiers && Array.isArray(segment.identifiers)) {
+        for (const identifier of segment.identifiers) {
+          s[identifier.type.toLowerCase()] = identifier.value;
+        }
+      }
+  
+      routeSegments.push(s);
+    }  
   }
 
   return routeSegments;
