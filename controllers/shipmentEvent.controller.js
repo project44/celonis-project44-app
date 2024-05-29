@@ -9,22 +9,26 @@ const { logger } = require('../utils/logger.js');
  * @returns {Array} - The parsed events array.
  */
 async function parseEvents(events, shipment) {
-  if (!events) return null; 
+  var response = [];
 
-  var e = events.map((event) => ({
-    shipment_id: shipment.id,
-    type: event.type || null,
-    date_time: event.dateTime || null,
-    received_date_time: event.receivedDateTime || null,
-    description: event.description || null,
-    stop_id: event.stopId || null,
-    route_segment_id: event.routeSegmentId || null,
-    estimate_date_time: event.estimateDateTime || null,
-    estimate_last_calculated_date_time: event.estimateLastCalculatedDateTime || null,
-    planned_date_time: event.plannedDateTime || null,
-    planned_end_date_time: event.plannedEndDateTime || null
-  }));
-  return e;
+  events.forEach(event => {
+    if(shipment.id && event.type && event.stopId && event.routeSegmentId) {
+      var item = {};
+      item.shipment_id = shipment.id;
+      item.type = event.type || null;
+      item.date_time = event.dateTime || null;
+      item.received_date_time = event.receivedDateTime || null;
+      item.description = event.description || null;
+      item.stop_id = event.stopId || null;
+      item.route_segment_id = event.routeSegmentId || null;
+      item.estimate_date_time = event.estimateDateTime || null;
+      item.estimate_last_calculated_date_time = event.estimateLastCalculatedDateTime || null;
+      item.planned_date_time = event.plannedDateTime || null;
+      item.planned_end_date_time = event.plannedEndDateTime || null;
+      response.push(item);
+    }
+  });
+  return response;
 }
 
 /**
@@ -36,6 +40,10 @@ async function parseEvents(events, shipment) {
  */
 async function processEvents(events, shipment) {
   var events = await parseEvents(events, shipment);
+  if(events.length === 0) {
+    logger.warn(`No events found for shipment ${shipment.id}.`);
+    return;
+  }
   var fileName = await writeParquetFile(events, 'shipment_events', SHIPMENT_EVENT_SCHEME, shipment.id);
   logger.info(`File ${fileName} Created.`);
 }

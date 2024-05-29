@@ -36,6 +36,8 @@ const SHIPMENT_EVENT_SCHEME = new parquet.ParquetSchema({
  */
 const SHIPMENT_EVENT_KEYS = [
   "shipment_id",
+  "stop_id",
+  "route_segment_id",
   "type"
 ];
 

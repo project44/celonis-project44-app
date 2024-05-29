@@ -9,6 +9,7 @@ const SHIPMENT_EVENT_DETAIL_SCHEME = new parquet.ParquetSchema({
   shipment_id: { type: 'UTF8' },
   stop_id: { type: 'UTF8', optional: true },
   route_segment_id: { type: 'UTF8', optional: true },
+  event_type: { type: 'UTF8', optional: true },
   type: { type: 'UTF8' },
   date_time: { type: 'UTF8' },
   end_date_time: { type: 'UTF8', optional: true },
@@ -78,8 +79,11 @@ const SHIPMENT_EVENT_DETAIL_SCHEME = new parquet.ParquetSchema({
  */
 const SHIPMENT_EVENT_DETAIL_KEYS = [
   "shipment_id",
+  "stop_id", 
+  "route_segment_id",
+  "event_type",
   "type",
-  "date_time",
+  "source"
 ];
 
 module.exports = {

@@ -111,14 +111,13 @@ async function parseOrderItems(items, orderId) {
 async function processOrderItems(shipment) {
   var orders = await getOrders(shipment.id);
   if(orders == null || orders.length == 0) {
-    logger.error(`No Orders found for Shipment ${shipment.id}`);
     return;
   }
 
   for(const order of orders) {
     var orderItems = await getOrderItems( order.id );
     if(orderItems == null || orderItems.length == 0) {
-      logger.error(`No Order Items found for Shipment ${shipment.id} Order: ${order.id}`);
+      logger.warn(`No Order Items found for Shipment ${shipment.id} Order: ${order.id}`);
       return;
     }
     var parsedOrderItems = await parseOrderItems(orderItems, order.id, shipment.id);  

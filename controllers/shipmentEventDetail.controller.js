@@ -16,30 +16,33 @@ async function parseEventDetails(events, shipment) {
 
   events.forEach((event) => {
     for(const detail of event.dateTimes) {
-      var d = {
-        shipment_id: shipment.id,
-        stop_id: event.stopId || null,
-        route_segment_id: event.routeSegmentId || null,
-        type: detail.type || null,
-        date_time: detail.dateTime || null,
-        end_date_time: detail.endDateTime || null,
-        last_modified_date_time: detail.lastModifiedDateTime || null,
-        source: detail.source || null,
-        selected: detail.selected || false,
-        sequence: detail.sequence || 1
-      };
-
-      for (const identifierType of sourceIdentifierTypes) {
-        d[identifierType] = null;
-      }
+      if(shipment.id && event.stopId && event.routeSegmentId && event.type && detail.type && detail.dateTime && detail.source) {
+        var d = {
+          shipment_id: shipment.id,
+          stop_id: event.stopId,
+          route_segment_id: event.routeSegmentId,
+          event_type: event.type,
+          type: detail.type,
+          date_time: detail.dateTime,
+          end_date_time: detail.endDateTime || null,
+          last_modified_date_time: detail.lastModifiedDateTime || null,
+          source: detail.source,
+          selected: detail.selected || false,
+          sequence: detail.sequence || 1
+        };
   
-      if (detail.sourceIdentifiers && Array.isArray(detail.sourceIdentifiers)) {
-        for (const identifier of detail.sourceIdentifiers) {
-          d[identifier.type.toLowerCase()] = identifier.value;
+        for (const identifierType of sourceIdentifierTypes) {
+          d[identifierType] = null;
         }
+    
+        if (detail.sourceIdentifiers && Array.isArray(detail.sourceIdentifiers)) {
+          for (const identifier of detail.sourceIdentifiers) {
+            d[identifier.type.toLowerCase()] = identifier.value;
+          }
+        }
+        
+        details.push(d);  
       }
-      
-      details.push(d);
     }
   });
 
@@ -55,6 +58,10 @@ async function parseEventDetails(events, shipment) {
  */
 async function processEventDetails(events, shipment) {
   var events = await parseEventDetails(events, shipment);
+  if(events.length === 0) {
+    logger.warn(`No event details found for shipment ${shipment.id}.`);
+    return;
+  }
   var fileName = await writeParquetFile(events, 'shipment_event_details', SHIPMENT_EVENT_DETAIL_SCHEME, shipment.id);
   logger.info(`File ${fileName} Created.`);
 }

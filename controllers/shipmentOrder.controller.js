@@ -130,7 +130,7 @@ async function processOrders(shipment) {
   var orders = await getOrders(shipment.id);
   var parsedOrders = await parseOrders(orders, shipment.id);  
   if(orders == null || orders.length == 0) {
-    logger.error(`No Orders found for Shipment ${shipment.id}`);
+    logger.warn(`No Orders found for Shipment ${shipment.id}`);
     return;
   }
   var fileName = await writeParquetFile(parsedOrders, 'shipment_orders', SHIPMENT_ORDER_SCHEME, shipment.id);
