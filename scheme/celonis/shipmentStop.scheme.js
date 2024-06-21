@@ -8,6 +8,8 @@ const parquet = require('parquetjs');
 const SHIPMENT_STOP_SCHEME = new parquet.ParquetSchema({
   shipment_id: { type: 'UTF8' },
   stop_id: { type: 'UTF8' },
+  stop_type: { type: 'UTF8', optional: true },
+  location_id: { type: 'UTF8', optional: true },
   address_line_1: { type: 'UTF8', optional: true},
   address_line_2: { type: 'UTF8', optional: true },
   address_line_3: { type: 'UTF8', optional: true },
@@ -37,7 +39,8 @@ const SHIPMENT_STOP_SCHEME = new parquet.ParquetSchema({
  */
 const SHIPMENT_STOP_KEYS = [
   "shipment_id",
-  "stop_id"
+  "stop_id",
+  "stop_type"
 ];
 
 module.exports = {

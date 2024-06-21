@@ -48,7 +48,7 @@ async function push() {
             for(var f = 0; f < files.length; f++) {
   
               const fileName = path.join(dirName, files[f]);
-              logger.info(`Uploading File ${fileName}.`);
+              logger.info(`Uploading File ${fileName} for Job ${job.data.id}.`);
               // Upload file to Celonis
               await uploadJobFile(job.data.id, fileName);
               logger.info(`Deleting File ${fileName}.`);
