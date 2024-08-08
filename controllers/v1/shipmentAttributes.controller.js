@@ -1,6 +1,6 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_ATTRIBUTE_SCHEME } = require('../scheme/celonis/shipmentAttribute.scheme.js');
-const { logger } = require('../utils/logger.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_ATTRIBUTE_SCHEME } = require('../../scheme/celonis/shipmentAttribute.scheme.js');
+const { logger } = require('../../utils/logger.js');
 
 /**
  * Parses the attributes of a shipment and returns an array of attribute objects.

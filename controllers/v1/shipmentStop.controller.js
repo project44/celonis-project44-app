@@ -1,7 +1,7 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_STOP_SCHEME } = require('../scheme/celonis/shipmentStop.scheme.js');
-const { stopIdentifierTypes } = require('../config/constants.js');
-const { logger } = require('../utils/logger.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_STOP_SCHEME } = require('../../scheme/celonis/shipmentStop.scheme.js');
+const { stopIdentifierTypes } = require('../../config/constants.js');
+const { logger } = require('../../utils/logger.js');
 
 /**
  * Parses the stops of a shipment and returns an array of stop objects.

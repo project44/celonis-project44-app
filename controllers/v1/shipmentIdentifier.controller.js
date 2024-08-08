@@ -1,6 +1,6 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_IDENTIFIER_SCHEME } = require('../scheme/celonis/shipmentIdentifier.scheme.js');
-const { logger } = require('../utils/logger.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_IDENTIFIER_SCHEME } = require('../../scheme/celonis/shipmentIdentifier.scheme.js');
+const { logger } = require('../../utils/logger.js');
 
 /**
  * Parses the identifiers of a shipment.

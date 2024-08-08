@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const config = require('../config/config');
 const logger = require('../utils/logger');
-const ApiError = require('../utils/ApiError');
+const {ApiError} = require('../utils/ApiError');
 
 /**
  * Converts an error to an instance of ApiError.

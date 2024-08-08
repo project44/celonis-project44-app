@@ -1,6 +1,6 @@
-const { logger } = require('../utils/logger.js');
-const AuthService = require('../services/p44.authentication.service.js');
-const { PROJECT44_CLIENT_ID, PROJECT44_CLIENT_SECRET } = require('../config/config');
+const { logger } = require('../../utils/logger.js');
+const AuthService = require('../../services/p44.authentication.service.js');
+const { PROJECT44_CLIENT_ID, PROJECT44_CLIENT_SECRET } = require('../../config/config.js');
 const dayjs = require('dayjs');
 const httpStatus = require('http-status');
 

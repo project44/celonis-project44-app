@@ -1,6 +1,6 @@
 const express = require('express');
 const webhookRoute = require('./webhook');
-const config = require('../config/config');
+const config = require('../../config/config');
 
 const router = express.Router();
 

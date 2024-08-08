@@ -1,6 +1,6 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_EVENT_SCHEME } = require('../scheme/celonis/shipmentEvent.scheme.js');
-const { logger } = require('../utils/logger.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_EVENT_SCHEME } = require('../../scheme/celonis/shipmentEvent.scheme.js');
+const { logger } = require('../../utils/logger.js');
 
 /**
  * Parses the events array and maps it to a new array with the required properties.

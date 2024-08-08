@@ -11,8 +11,8 @@ const { processShipmentAttributes } = require('./shipmentAttributes.controller.j
 const { processOrders } = require('./shipmentOrder.controller.js');
 const { processOrderItems } = require('./shipmentOrderItem.controller.js');
 
-const { PROJECT44_INCLUDE_ORDERS, PROJECT44_INCLUDE_ORDER_ITEMS } = require('../config/config.js');
-const logger = require('../utils/logger.js');
+const { PROJECT44_INCLUDE_ORDERS, PROJECT44_INCLUDE_ORDER_ITEMS } = require('../../config/config.js');
+const logger = require('../../utils/logger.js');
 const fs = require('fs');
 const path = require('path');
 

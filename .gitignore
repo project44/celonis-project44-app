@@ -8,10 +8,16 @@ yarn-error.log*
 # Infrastructure as code
 service.yaml
 
+script.js
+scriptb.js
+
 # image files
 *.png
 *.jpg
 images
+
+mockData/*.js
+mockData 
 
 # out
 *.out

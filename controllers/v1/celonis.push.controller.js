@@ -1,20 +1,21 @@
-const { logger } = require('../utils/logger.js');
+const { logger } = require('../../utils/logger.js');
 // const { writeParquetFile } = require('../utils/parquet.js');
-const { createJob, uploadJobFile, executeJob } = require('../services/celonis.service.js');
+const { createJob, uploadJobFile, executeJob } = require('../../services/celonis.service.js');
 const fs = require('fs');
 const path = require('path');
 
-const { SHIPMENT_ATTRIBUTE_KEYS } = require('../scheme/celonis/shipmentAttribute.scheme.js');
-const { SHIPMENT_EVENT_KEYS } = require('../scheme/celonis/shipmentEvent.scheme.js');
-const { SHIPMENT_EVENT_DETAIL_KEYS } = require('../scheme/celonis/shipmentEventDetail.scheme.js');
-const { SHIPMENT_IDENTIFIER_KEYS } = require('../scheme/celonis/shipmentIdentifier.scheme.js');
-const { SHIPMENT_ORDER_KEYS } = require('../scheme/celonis/shipmentOrder.scheme.js');
-const { SHIPMENT_ORDER_ITEM_KEYS } = require('../scheme/celonis/shipmentOrderItem.scheme.js');
-const { SHIPMENT_POSITION_KEYS } = require('../scheme/celonis/shipmentPosition.scheme.js');
-const { SHIPMENT_RELATED_SHIPMENT_KEYS } = require('../scheme/celonis/shipmentRelatedShipment.scheme.js');
-const { SHIPMENT_ROUTE_SEGMENT_KEYS } = require('../scheme/celonis/shipmentRouteSegment.scheme.js');
-const { SHIPMENT_STATE_KEYS } = require('../scheme/celonis/shipmentState.scheme.js');
-const { SHIPMENT_STOP_KEYS } = require('../scheme/celonis/shipmentStop.scheme.js');
+const { SHIPMENT_ATTRIBUTE_KEYS } = require('../../scheme/celonis/shipmentAttribute.scheme.js');
+const { SHIPMENT_EVENT_KEYS } = require('../../scheme/celonis/shipmentEvent.scheme.js');
+const { SHIPMENT_EVENT_DETAIL_KEYS } = require('../../scheme/celonis/shipmentEventDetail.scheme.js');
+const { SHIPMENT_IDENTIFIER_KEYS } = require('../../scheme/celonis/shipmentIdentifier.scheme.js');
+const { SHIPMENT_ORDER_KEYS } = require('../../scheme/celonis/shipmentOrder.scheme.js');
+const { SHIPMENT_ORDER_ITEM_KEYS } = require('../../scheme/celonis/shipmentOrderItem.scheme.js');
+const { SHIPMENT_POSITION_KEYS } = require('../../scheme/celonis/shipmentPosition.scheme.js');
+const { SHIPMENT_RELATED_SHIPMENT_KEYS } = require('../../scheme/celonis/shipmentRelatedShipment.scheme.js');
+const { SHIPMENT_ROUTE_SEGMENT_KEYS } = require('../../scheme/celonis/shipmentRouteSegment.scheme.js');
+const { SHIPMENT_STATE_KEYS } = require('../../scheme/celonis/shipmentState.scheme.js');
+const { SHIPMENT_STOP_KEYS } = require('../../scheme/celonis/shipmentStop.scheme.js');
+const { dir } = require('console');
 
 /**
  * Pushes files to Celonis.
@@ -34,7 +35,10 @@ async function push() {
   
           // Get the table keys to send to Celonis
           var keys = getKeys(directories[d]);
-  
+          if(directories[d] === 'json') {
+            logger.info(`Skipping directory ${directories[d]}.`);
+            return;
+          }
           // read directories
           const dirName = `${rootDirName}/${directories[d]}`;
           logger.info(`Reading Directory ${dirName}.`);

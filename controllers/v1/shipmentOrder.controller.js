@@ -1,7 +1,7 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_ORDER_SCHEME } = require('../scheme/celonis/shipmentOrder.scheme.js');
-const { logger } = require('../utils/logger.js');
-const { getOrders }  = require('../services/p44.orders.service.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_ORDER_SCHEME } = require('../../scheme/celonis/shipmentOrder.scheme.js');
+const { logger } = require('../../utils/logger.js');
+const { getOrders }  = require('../../services/p44.orders.service.js');
 
 async function parseOrders(orders, shipment_id) {
   const payload = [];

@@ -1,6 +1,6 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_STATE_SCHEME } = require('../scheme/celonis/shipmentState.scheme.js');
-const { logger } = require('../utils/logger.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_STATE_SCHEME } = require('../../scheme/celonis/shipmentState.scheme.js');
+const { logger } = require('../../utils/logger.js');
 
 /**
  * Parses an array of states and returns a new array of parsed states.

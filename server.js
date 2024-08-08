@@ -3,15 +3,15 @@ const cors = require('cors');
 const { StatusCodes } = require('http-status');
 const { logger } = require('./utils/logger.js');
 const { PORT } = require('./config/config.js');
-// const webhookRoutes = require("./routes/p44webhook.routes");
-const routes = require('./routes/webhook.js');
-const { authenticateCredentials } = require('./controllers/authentication.controller.js');
+const v1Routes = require('./routes/v1/webhook.js');
+const v2Routes = require('./routes/v2/webhook.js');
+const { authenticateCredentials } = require('./controllers/v1/authentication.controller.js');
 
 const httpStatus = require('http-status');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError.js');
 
-const pushToCelonisCronJob = require('./controllers/cron.controller.js');
+const pushToCelonisCronJob = require('./controllers/v1/cron.controller.js');
 
 const app = express();
 const port = PORT || 3000;
@@ -46,7 +46,8 @@ app.use(cors());
 app.options('*', cors());
 
 // Parse JSON
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));  // Increase form data limit 
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -55,8 +56,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Mount routes
-app.use('/v1/api', authenticateCredentials, routes);
+// Mount v1Routes
+app.use('/v1/api', authenticateCredentials, v1Routes);
+app.use('/v2/api', authenticateCredentials, v2Routes);
 
 // Convert error to ApiError, if needed
 app.use(errorConverter);

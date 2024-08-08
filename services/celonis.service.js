@@ -1,6 +1,6 @@
-const axios = require('axios');
+const AWS = require('aws-sdk');
 const fs = require('fs');
-const FormData = require('form-data');
+const path = require('path');
 
 const { CELONIS_API_SERVER, CELONIS_API_KEY, CELONIS_POOL_ID } = require('../config/config.js');
 const { logger } = require('../utils/logger.js');
@@ -102,8 +102,67 @@ const executeJob = async (jobId) => {
   }
 };
 
+/**
+ * Uploads a file to an S3 bucket using the Celonis API.
+ * 
+ * @param {string} celonisApp - The Celonis app name - this is some app name created by Celonis.
+ * @param {string} fileName - The name of the file to upload - this is a file that was created in a previous step.
+ * @param {string} connectionId - The connection ID - typcally this is a UUID.
+ * @param {string} accessKey - The S3 access key.
+ * @param {string} accessSecret - The S3 access secret.
+ * @param {string} [region='us-east-1'] - The S3 region (default is 'us-east-1').
+ * @param {string} [bucket='continuous'] - The S3 bucket name (default is 'continuous').
+ * @param {string} [targetTable='shipment'] - The target table name (default is 'shipment').
+ * @returns {Promise<void>} - A promise that resolves when the file is uploaded successfully.
+ */
+const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessSecret, region='us-east-1', urlregion='us-1', bucket='continuous', targetTable='shipment') => {
+  //https://logistics-apps.us-1.celonis.cloud/api/data-ingestion
+  const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
+  
+  const s3 = new AWS.S3({
+    endpoint: endpoint_url,
+    region: region,
+    accessKeyId: accessKey,
+    secretAccessKey: accessSecret,
+    s3ForcePathStyle: true,
+  });
+
+  // Read the file content
+  fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
+  const rootDirName = `${path.resolve(__dirname)}`.replace('services', 'parquetFiles');
+  logger.info(`Reading rootDir ${rootDirName}`);
+  const fileDir = `${rootDirName}/json/${fileName}`;
+  logger.info(`Reading file ${fileDir}`);
+  var fileContent = fs.readFileSync(`${fileDir.toString()}`);
+  logger.info(`File ${rootDirName}/json/${fileName} read. ${fileContent.length} bytes`);
+
+  // Construct the object name
+  const objectName = `connection/${connectionId}/${targetTable}/${fileName}`;
+
+  // Upload parameters
+  const params = {
+    Bucket: bucket,
+    Key: objectName, 
+    Body: fileContent 
+  };
+  
+  try {
+    console.log(`File ${fileName} uploading to ${bucket}/${objectName}`);
+    await s3.upload(params).promise();
+    console.log(`File ${fileName} uploaded to ${bucket}/${objectName}`);
+    return fileName;
+  } catch (err) {
+    if (err.code === 'NoSuchKey') {
+      console.error(`The file ${fileName} was not found`);
+    } else {
+      console.error(`Error uploading file:`, err);
+    }
+  }
+}
+
 module.exports = {
   createJob,
   uploadJobFile,
-  executeJob
+  executeJob,
+  uploadToS3
 };

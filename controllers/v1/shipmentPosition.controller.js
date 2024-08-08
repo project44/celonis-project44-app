@@ -1,6 +1,6 @@
-const { writeParquetFile } = require('../utils/parquet.js');
-const { SHIPMENT_POSITION_SCHEME } = require('../scheme/celonis/shipmentPosition.scheme.js');
-const { logger } = require('../utils/logger.js');
+const { writeParquetFile } = require('../../utils/parquet.js');
+const { SHIPMENT_POSITION_SCHEME } = require('../../scheme/celonis/shipmentPosition.scheme.js');
+const { logger } = require('../../utils/logger.js');
 
 /**
  * Parses an array of positions and returns a new array of parsed positions.

@@ -1,6 +1,6 @@
 const cron = require('node-cron');
-const {logger} = require('../utils/logger.js');
-const { CRON_SCHEDULE } = require('../config/config.js');
+const {logger} = require('../../utils/logger.js');
+const { CRON_SCHEDULE } = require('../../config/config.js');
 const { push } = require('./celonis.push.controller.js');
 
 async function startCronJob() {
