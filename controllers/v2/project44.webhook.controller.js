@@ -5,7 +5,7 @@ const { getOrders } = require('../../services/p44.orders.service.js');
 const { getOrderItems } = require('../../services/p44.orderItems.service.js');
 // const mockItems = require('../../mockData/orderItems.js');
 // const mockOrders  = require('../../mockData/orders.js');
-const { writeJsonParquetFile } = require('../../utils/parquet.js')
+const { writeJsonParquetFile, deleteParquetFile } = require('../../utils/parquet.js')
 const {logger} = require('../../utils/logger.js');
 const fs = require('fs');
 const path = require('path');
@@ -33,6 +33,10 @@ const receivePost = async (req, res, next) => {
   var filename = await writeJsonParquetFile(payload);
   logger.info(`Wrote file: ${filename}`);
 
+  console.log(`==================== Headers Begin ====================`);
+  console.log(req.headers);
+  console.log(`====================  Headers End  ====================`);
+
   var celonisApp = req.headers['x-celonis-app'];                        // logistics-apps    
   var celonisAwsRegion = req.headers['x-celonis-aws-region'];           // us-east-1
   var celonisUrlRegion = req.headers['x-celonis-url-region'];           // us-1
@@ -43,6 +47,7 @@ const receivePost = async (req, res, next) => {
   
   await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessToken, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
 
+  await deleteParquetFile(filename);
 }
 
 async function parseAndProcessShipment(req, res, next) {
