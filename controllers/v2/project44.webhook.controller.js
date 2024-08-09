@@ -44,7 +44,8 @@ const receivePost = async (req, res, next) => {
   var celonisAccessToken = req.headers['x-celonis-access-token'];       
   var celonisAccessSecret = req.headers['x-celonis-access-secret'];     
   var celonisBucketId = req.headers['x-celonis-bucket-id'];             // continuous
-  
+  logger.info(`Celonis App: ${celonisApp}`);
+  logger.info(`Celonis AWS Region: ${celonisAwsRegion}`);
   await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessToken, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
 
   await deleteParquetFile(filename);

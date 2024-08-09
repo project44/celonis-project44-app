@@ -8,6 +8,8 @@ yarn-error.log*
 # Infrastructure as code
 service.yaml
 
+.aws/*
+
 script.js
 scriptb.js
 
