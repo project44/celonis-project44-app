@@ -1,4 +1,4 @@
-process.env.AWS_SDK_LOAD_CONFIG = 1;
+// process.env.AWS_SDK_LOAD_CONFIG = 1;
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const path = require('path');
