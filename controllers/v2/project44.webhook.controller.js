@@ -33,9 +33,9 @@ const receivePost = async (req, res, next) => {
   var filename = await writeJsonParquetFile(payload);
   logger.info(`Wrote file: ${filename}`);
 
-  console.log(`==================== Headers Begin ====================`);
-  console.log(req.headers);
-  console.log(`====================  Headers End  ====================`);
+  // console.log(`==================== Headers Begin ====================`);
+  // console.log(req.headers);
+  // console.log(`====================  Headers End  ====================`);
 
   var celonisApp = req.headers['x-celonis-app'];                        // logistics-apps    
   var celonisAwsRegion = req.headers['x-celonis-aws-region'];           // us-east-1
@@ -44,8 +44,8 @@ const receivePost = async (req, res, next) => {
   var celonisAccessToken = req.headers['x-celonis-access-token'];       
   var celonisAccessSecret = req.headers['x-celonis-access-secret'];     
   var celonisBucketId = req.headers['x-celonis-bucket-id'];             // continuous
-  logger.info(`Celonis App: ${celonisApp}`);
-  logger.info(`Celonis AWS Region: ${celonisAwsRegion}`);
+  // logger.info(`Celonis App: ${celonisApp}`);
+  // logger.info(`Celonis AWS Region: ${celonisAwsRegion}`);
   await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessToken, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
 
   await deleteParquetFile(filename);

@@ -128,6 +128,9 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
     s3ForcePathStyle: true,
   });
 
+  
+  // AWS.config.loadFromPath('./config.json');
+
   // Read the file content
   fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
   const rootDirName = `${path.resolve(__dirname)}`.replace('services', 'parquetFiles');
