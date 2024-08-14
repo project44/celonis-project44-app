@@ -120,17 +120,6 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   //https://logistics-apps.us-1.celonis.cloud/api/data-ingestion
   const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
 
-  logger.info(`Uploading file ${fileName} to ${endpoint_url}`);
-  logger.info(`Celonis App: ${celonisApp}`);  
-  logger.info(`Connection ID: ${connectionId}`);
-  logger.info(`Access Key: ${accessKey}`);
-  logger.info(`Access Secret: ${accessSecret}`);
-  logger.info(`Region: ${region}`);
-  logger.info(`URL Region: ${urlregion}`);
-  logger.info(`Bucket: ${bucket}`);
-  logger.info(`Target Table: ${targetTable}`);
-
-
   const s3 = new AWS.S3({
     endpoint: endpoint_url,
     region: region,
@@ -140,16 +129,11 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   });
 
   
-  // AWS.config.loadFromPath('./config.json');
-
   // Read the file content
   fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
   const rootDirName = `${path.resolve(__dirname)}`.replace('services', 'parquetFiles');
-  logger.info(`Reading rootDir ${rootDirName}`);
   const fileDir = `${rootDirName}/json/${fileName}`;
-  logger.info(`Reading file ${fileDir}`);
   var fileContent = fs.readFileSync(`${fileDir.toString()}`);
-  logger.info(`File ${rootDirName}/json/${fileName} read. ${fileContent.length} bytes`);
 
   // Construct the object name
   const objectName = `connection/${connectionId}/${targetTable}/${fileName}`;
@@ -162,7 +146,6 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   };
   
   try {
-    console.log(`File ${fileName} uploading to ${bucket}/${objectName}`);
     await s3.upload(params).promise();
     console.log(`File ${fileName} uploaded to ${bucket}/${objectName}`);
     return fileName;
