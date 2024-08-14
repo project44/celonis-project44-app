@@ -121,7 +121,7 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
 
   logger.info(`Uploading file ${fileName} to ${endpoint_url}`);
-  logger.ingo(`Celonis App: ${celonisApp}`);  
+  logger.info(`Celonis App: ${celonisApp}`);  
   logger.info(`Connection ID: ${connectionId}`);
   logger.info(`Access Key: ${accessKey}`);
   logger.info(`Access Secret: ${accessSecret}`);
