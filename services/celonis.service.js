@@ -119,7 +119,18 @@ const executeJob = async (jobId) => {
 const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessSecret, region='us-east-1', urlregion='us-1', bucket='continuous', targetTable='shipment') => {
   //https://logistics-apps.us-1.celonis.cloud/api/data-ingestion
   const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
+
   logger.info(`Uploading file ${fileName} to ${endpoint_url}`);
+  logger.ingo(`Celonis App: ${celonisApp}`);  
+  logger.info(`Connection ID: ${connectionId}`);
+  logger.info(`Access Key: ${accessKey}`);
+  logger.info(`Access Secret: ${accessSecret}`);
+  logger.info(`Region: ${region}`);
+  logger.info(`URL Region: ${urlregion}`);
+  logger.info(`Bucket: ${bucket}`);
+  logger.info(`Target Table: ${targetTable}`);
+
+
   const s3 = new AWS.S3({
     endpoint: endpoint_url,
     region: region,
