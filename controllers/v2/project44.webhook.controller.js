@@ -33,9 +33,9 @@ const receivePost = async (req, res, next) => {
   var filename = await writeJsonParquetFile(payload);
   logger.info(`Wrote file: ${filename}`);
 
-  // console.log(`==================== Headers Begin ====================`);
-  // console.log(req.headers);
-  // console.log(`====================  Headers End  ====================`);
+  console.log(`==================== Headers Begin ====================`);
+  console.log(req.headers);
+  console.log(`====================  Headers End  ====================`);
 
   var celonisApp = req.headers['x-celonis-app'];                        // logistics-apps    
   var celonisAwsRegion = req.headers['x-celonis-aws-region'];           // us-east-1
