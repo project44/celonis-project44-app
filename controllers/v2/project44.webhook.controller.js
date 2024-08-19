@@ -33,7 +33,15 @@ const receivePost = async (req, res, next) => {
   var filename = await writeJsonParquetFile(payload);
   logger.info(`Wrote file: ${filename}`);
 
-    await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessKey, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
+  var celonisApp = req.headers['x-celonis-app'];
+  var celonisConnectId = req.headers['x-celonis-connect-id'];
+  var celonisAccessKey = req.headers['x-celonis-access-key'];
+  var celonisAccessSecret = req.headers['x-celonis-access-secret'];
+  var celonisAwsRegion = req.headers['x-celonis-aws-region'];
+  var celonisUrlRegion = req.headers['x-celonis-url-region'];
+  var celonisBucketId = req.headers['x-celonis-bucket-id'];
+
+  await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessKey, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
 
   await deleteParquetFile(filename);
 }
