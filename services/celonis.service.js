@@ -120,7 +120,7 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   //https://logistics-apps.us-1.celonis.cloud/api/data-ingestion
   const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
 
-  logger.info(`ENDPOINT URL: ${endpoint_url}`); 
+  // logger.info(`ENDPOINT URL: ${endpoint_url}`); 
 
   const s3 = new AWS.S3({
     endpoint: endpoint_url,
@@ -153,7 +153,7 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
     return fileName;
   } catch (err) {
     if (err.code === 'NoSuchKey') {
-      console.error(`The file ${fileName} was not found`);
+      console.error(`The file ${fileName} was not found or uploadeded. (NoSuchKey)`);
     } else {
       console.error(`Error uploading file:`, err);
     }

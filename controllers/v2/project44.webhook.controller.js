@@ -41,9 +41,9 @@ const receivePost = async (req, res, next) => {
   var celonisUrlRegion = req.headers['x-celonis-url-region'];
   var celonisBucketId = req.headers['x-celonis-bucket-id'];
 
-  logger.info(`============================ HEADERS ============================`);
-  console.log(req.headers);
-  logger.info(`============================         ============================`);
+  // logger.info(`============================ HEADERS ============================`);
+  // console.log(req.headers);
+  // logger.info(`============================         ============================`);
   
   await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessKey, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
 
