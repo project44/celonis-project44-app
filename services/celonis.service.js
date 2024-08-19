@@ -120,6 +120,8 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   //https://logistics-apps.us-1.celonis.cloud/api/data-ingestion
   const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
 
+  logger.info(`ENDPOINT URL: ${endpoint_url}`); 
+  
   const s3 = new AWS.S3({
     endpoint: endpoint_url,
     region: region,
@@ -128,7 +130,6 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
     s3ForcePathStyle: true,
   });
 
-  
   // Read the file content
   fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
   const rootDirName = `${path.resolve(__dirname)}`.replace('services', 'parquetFiles');
