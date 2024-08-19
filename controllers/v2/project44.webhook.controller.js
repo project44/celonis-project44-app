@@ -34,7 +34,7 @@ const receivePost = async (req, res, next) => {
   logger.info(`Wrote file: ${filename}`);
 
   var celonisApp = req.headers['x-celonis-app'];
-  var celonisConnectId = req.headers['x-celonis-connect-id'];
+  var celonisConnectId = req.headers['x-celonis-connection-id'];
   var celonisAccessKey = req.headers['x-celonis-access-key'];
   var celonisAccessSecret = req.headers['x-celonis-access-secret'];
   var celonisAwsRegion = req.headers['x-celonis-aws-region'];
