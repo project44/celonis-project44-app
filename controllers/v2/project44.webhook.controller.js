@@ -42,7 +42,7 @@ const receivePost = async (req, res, next) => {
   var celonisBucketId = req.headers['x-celonis-bucket-id'];
 
   logger.info(`============================ HEADERS ============================`);
-  logger.info(req.headers);
+  console.log(req.headers);
   logger.info(`============================         ============================`);
   
   await uploadToS3(celonisApp, filename, celonisConnectId, celonisAccessKey, celonisAccessSecret, celonisAwsRegion, celonisUrlRegion, celonisBucketId, 'shipment');
