@@ -121,7 +121,7 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   const endpoint_url = `https://${celonisApp}.${urlregion}.celonis.cloud/api/data-ingestion`;
 
   logger.info(`ENDPOINT URL: ${endpoint_url}`); 
-  
+
   const s3 = new AWS.S3({
     endpoint: endpoint_url,
     region: region,
@@ -147,6 +147,7 @@ const uploadToS3 = async (celonisApp, fileName, connectionId, accessKey, accessS
   };
   
   try {
+    console.log(`Uploading File ${fileName} to ${bucket}/${objectName}`);
     await s3.upload(params).promise();
     console.log(`File ${fileName} uploaded to ${bucket}/${objectName}`);
     return fileName;
