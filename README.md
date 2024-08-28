@@ -1,7 +1,9 @@
-# project44/Celonis integration
+# project44/Celonis integration (Version 1)
 
 ## Purpose
 The purpose of this reference implementation is to show how one might intgrate project44 with Celonis by pushing information from Movement, the project44 High Velocity Platform, to Celonis Process Mining Platform. This reference implementation is written using [nodejs](https://nodejs.org/en). This solution uses data push from project44 to create a set of tables in Celonis that include shipment and shipment order information.
+
+*Note:* This version tends to have duplicate keys. We have worked with Celonis on a new method of sending data in JSON format as a parquet file. The file is uploaded to an AWS S3 bucket and Celonis processes the file. There is an extensive setup process on the Celonis side. More details to be provided in the Version 2 README.md.
 
 ## Schema mapping
 All Tables contain the unique project44 shipment id. Description of the Unified API Push Payload can be found in the [project44 Developer Portal Get Full Tracking History](https://developers.project44.com/api-reference/p44-api-reference/operation/getShipmentTrackingHistory/).
